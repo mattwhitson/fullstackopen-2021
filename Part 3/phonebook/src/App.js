@@ -47,6 +47,15 @@ const App = () => {
             setNotification(null)
           }, 5000)
           })
+          .catch(error => {
+            console.log(`error detection now`)
+            setNotification(
+            `${Object.values(error.response.data)}`
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+          })
     }
     else if(window.confirm(`Do you want to change ${newName}'s number?`)) {
       const person = persons.find(person => person.name === newName)
