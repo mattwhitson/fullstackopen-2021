@@ -36,6 +36,15 @@ function App() {
       })
   }
 
+  const removePost = (id) => {
+
+    blogService
+      .remove(id)
+    
+    setPosts(posts.filter(post => post.id !== id))
+  }
+
+
   const handleTitle = (event) => {
     setTitle(event.target.value)
   }
@@ -57,6 +66,7 @@ function App() {
             <h2 class="title">{post.title}</h2>
             <a href={post.url}>Blog Link</a>
             <p>By: {post.author} Likes: {post.likes}</p>
+            <button onClick={() => removePost(post.id)}>Delete</button>
           </div>)}
       </div>
       <h1>Create A New Blog Post</h1>

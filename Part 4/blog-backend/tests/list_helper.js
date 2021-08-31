@@ -1,11 +1,33 @@
-const totalLikes = (blogs) => {
-  const total = blogs.reduce((prev, current) => 
-    prev + current.likes, 0)
+const Post = require('../models/post')
 
 
-  return total
+
+const initialPosts = [
+  {
+    title: 'HTML is easy',
+    author: 'Matt',
+    url: 'www.google.com',
+    likes: 10,
+  },
+  {
+    title: 'LOL',
+    author: 'Leo',
+    url: 'www.wikipedia.org',
+    likes: 1,
+  },
+]
+
+
+const totalLikes = async (blogs) => {
+  const blogs = await Post.find{()}
+  return blogs.reduce((sum, post) => sum + post.likes, 0)
 }
 
+
+const totalPosts = async () => {
+  const blogs = await Post.find({})
+  return blogs.map(blog => blog.toJSON())
+}
 
 const mostLikes = (blogs) => {
   const best = blogs.reduce((prev, current) => 
@@ -41,18 +63,9 @@ const mostBlogs = (blogs) => {
 module.exports = {
   totalLikes,
   mostLikes,
-  mostBlogs
+  mostBlogs,
+  totalPosts
 }
 
 
 
-
-
-
-// const dummy = (blogs) => {
-//   return 1
-// }
-
-// module.exports = {
-//   dummy
-// }
