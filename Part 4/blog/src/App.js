@@ -36,6 +36,17 @@ function App() {
       })
   }
 
+  const addLike = (id) => {
+    const oldPost = posts.find(post => post.id === id)
+
+    const newObj = {...oldPost, likes : oldPost.likes + 1}
+
+    blogService
+      .update(id, newObj)
+
+    setPosts(posts.map(post => post.id !== newObj.id ? post : newObj))
+  }
+
   const removePost = (id) => {
 
     blogService
@@ -66,6 +77,7 @@ function App() {
             <h2 class="title">{post.title}</h2>
             <a href={post.url}>Blog Link</a>
             <p>By: {post.author} Likes: {post.likes}</p>
+            <button onClick={() => addLike(post.id)}>Like</button>
             <button onClick={() => removePost(post.id)}>Delete</button>
           </div>)}
       </div>
