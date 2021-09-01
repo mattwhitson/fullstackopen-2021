@@ -3,13 +3,6 @@ const jwt = require('jsonwebtoken')
 const Post = require('../models/post')
 const User = require('../models/user')
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
 
 postsRouter.get('/', async (request, response) => {
   const posts = await Post.find({}).populate('user', { username: 1, name: 1})
@@ -20,7 +13,7 @@ postsRouter.get('/', async (request, response) => {
 postsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  const token = getTokenFrom(request)
+  const token = request.token
   const decodedToken = jwt.verify(token, process.env.SECRET)
   if (!token || !decodedToken.id) {
     return response.status(401).json({ error: 'token missing or invalid' })
@@ -51,9 +44,18 @@ postsRouter.post('/', async (request, response) => {
 
 
 postsRouter.delete('/:id', async (request, response) => {
-  const post = await Post.findByIdAndRemove(request.params.id)
-  console.log(request.params.id)
-  return response.status(204).end()
+  const post = await Post.findById(request.params.id)
+  const token = request.token
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  const user = await User.findById(decodedToken.id)
+
+  if(post.user._id.toString() === user._id.toString()){
+    await Post.findByIdAndRemove(request.params.id)
+    return response.status(204).end()
+  }
+  else {
+    return response.status(401).json({error: "the user did not create this post"})
+  }
 })
 
 postsRouter.put('/:id', async (request, response) => {
