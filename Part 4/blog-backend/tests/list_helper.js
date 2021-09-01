@@ -18,8 +18,8 @@ const initialPosts = [
 ]
 
 
-const totalLikes = async (blogs) => {
-  const blogs = await Post.find{()}
+const totalLikes = async () => {
+  const blogs = await Post.find({})
   return blogs.reduce((sum, post) => sum + post.likes, 0)
 }
 
