@@ -14,11 +14,12 @@ postsRouter.post('/', async (request, response) => {
   const body = request.body
 
   const token = request.token
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
+  
+  const user = request.user
+
+  if(user === null) {
     return response.status(401).json({ error: 'token missing or invalid' })
   }
-  const user = await User.findById(decodedToken.id)
 
   if(body.likes === undefined) {
     body.likes = 0
