@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
+import BlogExpanded from './components/BlogExpanded'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -13,6 +16,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
+  const [blogVisible, setBlogVisible] = useState(false)
+
+  const noteFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -40,7 +46,7 @@ const App = () => {
         'loggedNoteappUser', JSON.stringify(userCredentials)
       ) 
       blogService.setToken(userCredentials.token)
-      console.log(userCredentials)
+     
       setUser(userCredentials)
       setUsername('')
       setPassword('')
@@ -51,7 +57,7 @@ const App = () => {
     } catch (exception) {
       console.log(exception)
       console.log(user)
-      setMessage('Wrong credentials')
+      setMessage('ERROR: Wrong credentials')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -67,7 +73,7 @@ const App = () => {
       url: url,
       likes: 0
     }
-
+    noteFormRef.current.toggleVisibility()
     blogService
       .create(newPost)
       .then(response => {
@@ -76,6 +82,7 @@ const App = () => {
         setTitle('')
         setUrl('')
       })
+
 
     setMessage(`${user.name} has posted a new blog titled ${newPost.title}`)
       setTimeout(() => {
@@ -110,28 +117,43 @@ const App = () => {
       </div>
   )
   
-  const blogForm = () => (
-    <div>
-      <h1>blogs</h1>
-      <Notification message={message} />
-      <p>{user.name} logged-in</p>
-      <h2>Create New</h2>
-      <form onSubmit={addPost}>
-        <div>
-          Title: <input onChange={({target}) => setTitle(target.value)} />
-        </div>
-        <div>
-          Author: <input onChange={({target}) => setName(target.value)} />
-        </div>
-        <div>
-          URL: <input onChange={({target}) => setUrl(target.value)} />
-        </div>
-        <div>
-          <button type="submit">Add</button>
-        </div>
-      </form>
-    </div>
-  )
+  const blogForm = () => {
+    return(
+      <div>
+        <h1>blogs</h1>
+        <Notification message={message} />
+        <p>{user.name} logged-in</p>
+        <Togglable buttonLabel='Create New Note' ref={noteFormRef}>
+
+          <BlogForm message={message} user={user} addPost={addPost} 
+            handleTitleChange={({target}) => setTitle(target.value)}
+            handleNameChange={({target}) => setName(target.value)}
+            handleUrlChange={({target}) => setUrl(target.value)} />
+
+        </Togglable>
+       
+      </div>
+    )
+  }
+
+//   const updateBlog = async (newObj) => {
+//     try {
+//     const updatedPost = await blogService
+//       .update(newObj)
+
+//     setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
+//     setMessage(`The blog titled ${updatedPost.title} has successfully been updated`)
+//       setTimeout(() => {
+//         setMessage(null)
+//       }, 5000)
+
+//   } catch(exception) {
+//     setMessage(`ERROR: The blog post could not be updated. Please try again later`)
+//       setTimeout(() => {
+//         setMessage(null)
+//       }, 5000)
+//   }
+// }
 
 
 
@@ -143,7 +165,7 @@ const App = () => {
          }
       <br></br>
       {user !== null && blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <BlogExpanded key={blog.id} post={blog} />
       )}
     </div>
   )
