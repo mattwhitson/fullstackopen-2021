@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
@@ -16,14 +15,13 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
-  const [blogVisible, setBlogVisible] = useState(false)
 
   const noteFormRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -125,7 +123,7 @@ const App = () => {
         <p>{user.name} logged-in</p>
         <Togglable buttonLabel='Create New Note' ref={noteFormRef}>
 
-          <BlogForm message={message} user={user} addPost={addPost} 
+          <BlogForm addPost={addPost} 
             handleTitleChange={({target}) => setTitle(target.value)}
             handleNameChange={({target}) => setName(target.value)}
             handleUrlChange={({target}) => setUrl(target.value)} />
@@ -155,6 +153,25 @@ const App = () => {
   }
 }
 
+  const removeBlog = async (post) => {
+    try {
+      await blogService
+        .remove(post.id)
+
+      setBlogs(blogs.filter(blog => blog.id !== post.id))
+      setMessage(`The blog titled ${post.title} has successfully been removed`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } 
+    catch {
+      setMessage(`ERROR: You are not authorized to remove this blog`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
+
 
 
   return (
@@ -164,8 +181,8 @@ const App = () => {
           blogForm()
          }
       <br></br>
-      {user !== null && blogs.map(blog =>
-        <BlogExpanded key={blog.id} post={blog} updateBlog={updateBlog} />
+      {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        <BlogExpanded key={blog.id} post={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
       )}
     </div>
   )
