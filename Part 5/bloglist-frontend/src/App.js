@@ -136,24 +136,24 @@ const App = () => {
     )
   }
 
-//   const updateBlog = async (newObj) => {
-//     try {
-//     const updatedPost = await blogService
-//       .update(newObj)
+  const updateBlog = async (newObj) => {
+    try {
+    const updatedPost = await blogService
+      .update(newObj)
 
-//     setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
-//     setMessage(`The blog titled ${updatedPost.title} has successfully been updated`)
-//       setTimeout(() => {
-//         setMessage(null)
-//       }, 5000)
+    setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
+    setMessage(`The blog titled ${updatedPost.title} has successfully been updated`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
 
-//   } catch(exception) {
-//     setMessage(`ERROR: The blog post could not be updated. Please try again later`)
-//       setTimeout(() => {
-//         setMessage(null)
-//       }, 5000)
-//   }
-// }
+  } catch(exception) {
+    setMessage(`ERROR: The blog post could not be updated. Please try again later`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+  }
+}
 
 
 
@@ -165,7 +165,7 @@ const App = () => {
          }
       <br></br>
       {user !== null && blogs.map(blog =>
-        <BlogExpanded key={blog.id} post={blog} />
+        <BlogExpanded key={blog.id} post={blog} updateBlog={updateBlog} />
       )}
     </div>
   )

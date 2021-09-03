@@ -5,7 +5,6 @@ const BlogExpanded = React.forwardRef((props, ref) => {
   const post = props.post
 
   const [visible, setVisible] = useState(false)
-  const [virtualPost, setVirtualPost] = useState(post)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -26,28 +25,25 @@ const BlogExpanded = React.forwardRef((props, ref) => {
 
 
   const addLike = () => {
-    
-
   	const newObj = {...post, likes : post.likes + 1}
   	props.updateBlog(newObj)
-    setVirtualPost(newObj)
   }
 
   return(
   	<div style={blogStyle}>
 	  	<div style={hideWhenVisible}>
-	  		<p>{virtualPost.title}
+	  		<p>{post.title}
 	  		<button onClick={toggleVisibility}>View</button>
 	  		</p>
 	  	</div>
 	  	<div style={showWhenVisible}>
-	  		<p>{virtualPost.title}
+	  		<p>{post.title}
 	  		<button onClick={toggleVisibility}>Hide</button>
 	  		</p>
-	  		<p>{virtualPost.url}</p>
-	  		<p>Likes: {virtualPost.likes} 
-	  		<button>Like</button></p>
-	  		<p>{virtualPost.author}</p>
+	  		<p>{post.url}</p>
+	  		<p>Likes: {post.likes} 
+	  		<button onClick={addLike}>Like</button></p>
+	  		<p>{post.author}</p>
 	  	</div>
   	</div>
 
