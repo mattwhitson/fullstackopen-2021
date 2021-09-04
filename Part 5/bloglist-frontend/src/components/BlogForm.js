@@ -1,17 +1,17 @@
 import React from 'react'
 
 const BlogForm = ({ addPost, handleTitleChange, handleNameChange, handleUrlChange }) => (
-  <div>
+  <div className="formDiv">
     <h2>Create New</h2>
-    <form onSubmit={addPost}>
+    <form  onSubmit={addPost}>
       <div>
-          Title: <input onChange={handleTitleChange} />
+          Title: <input className="title" onChange={handleTitleChange} />
       </div>
       <div>
-          Author: <input onChange={handleNameChange} />
+          Author: <input className="author" onChange={handleNameChange} />
       </div>
       <div>
-          URL: <input onChange={handleUrlChange} />
+          URL: <input className="url" onChange={handleUrlChange} />
       </div>
       <button onSubmit={addPost}>Add</button>
     </form>

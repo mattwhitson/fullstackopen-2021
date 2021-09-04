@@ -37,11 +37,11 @@ const BlogExpanded = React.forwardRef((props, ref) => {
 
   return(
     <div style={blogStyle}>
-      <div style={hideWhenVisible}>
-        {`${post.title}`}
+      <div style={hideWhenVisible} className="infoHidden">
+        {`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}&nbsp;&nbsp;&nbsp;
         <button onClick={toggleVisibility}>View</button>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="infoVisible">
         <p>{post.title}
           <button onClick={toggleVisibility}>Hide</button>
         </p>
