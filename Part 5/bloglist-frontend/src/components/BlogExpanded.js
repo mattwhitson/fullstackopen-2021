@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
 
-const BlogExpanded = React.forwardRef((props, ref) => {
+const BlogExpanded = (props) => {
   const post = props.post
 
   const [visible, setVisible] = useState(false)
@@ -36,17 +36,17 @@ const BlogExpanded = React.forwardRef((props, ref) => {
   }
 
   return(
-    <div style={blogStyle}>
+    <div style={blogStyle} className="post">
       <div style={hideWhenVisible} className="infoHidden">
         {`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}&nbsp;&nbsp;&nbsp;
         <button onClick={toggleVisibility}>View</button>
       </div>
       <div style={showWhenVisible} className="infoVisible">
-        <p>{post.title}
+        <p className="postTitle">{post.title}
           <button onClick={toggleVisibility}>Hide</button>
         </p>
         <p>{post.url}</p>
-        <p>Likes: {post.likes}
+        <p className="likes">Likes: {post.likes}
           <button onClick={addLike}>Like</button></p>
         <p>{post.author}</p>
         <button onClick={removePost} >Remove</button>
@@ -55,7 +55,7 @@ const BlogExpanded = React.forwardRef((props, ref) => {
 
   )
 
-})
+}
 
 BlogExpanded.displayName = 'BlogExpanded'
 

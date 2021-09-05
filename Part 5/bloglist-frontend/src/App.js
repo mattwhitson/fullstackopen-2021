@@ -11,7 +11,7 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState(null)
   const [user, setUser] = useState(null)
@@ -42,13 +42,13 @@ const App = () => {
 
       window.localStorage.setItem(
         'loggedNoteappUser', JSON.stringify(userCredentials)
-      ) 
+      )
       blogService.setToken(userCredentials.token)
-     
+
       setUser(userCredentials)
       setUsername('')
       setPassword('')
-      setMessage(`You have successfully logged in`)
+      setMessage('You have successfully logged in')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -75,7 +75,7 @@ const App = () => {
     blogService
       .create(newPost)
       .then(response => {
-        setBlogs(blogs.concat(newPost))
+        setBlogs(blogs.concat(response))
         setName('')
         setTitle('')
         setUrl('')
@@ -83,9 +83,9 @@ const App = () => {
 
 
     setMessage(`${user.name} has posted a new blog titled ${newPost.title}`)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
 
@@ -94,64 +94,45 @@ const App = () => {
       <h1>Please Login</h1>
       <Notification message={message} />
       <form onSubmit={handleLogin}>
-          <div>
+        <div>
             username
-              <input
-              type="text"
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
+          <input
+            type="text"
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
             password
-              <input
-              type="password"
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </div>
+          <input
+            type="password"
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
+    </div>
   )
-  
-  const blogForm = () => {
-    return(
-      <div>
-        <h1>blogs</h1>
-        <Notification message={message} />
-        <p>{user.name} logged-in</p>
-        <Togglable buttonLabel='Create New Note' ref={noteFormRef}>
-
-          <BlogForm addPost={addPost} 
-            handleTitleChange={({target}) => setTitle(target.value)}
-            handleNameChange={({target}) => setName(target.value)}
-            handleUrlChange={({target}) => setUrl(target.value)} />
-
-        </Togglable>
-       
-      </div>
-    )
-  }
 
   const updateBlog = async (newObj) => {
     try {
-    const updatedPost = await blogService
-      .update(newObj)
+      const updatedPost = await blogService
+        .update(newObj)
 
-    setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
-    setMessage(`The blog titled ${updatedPost.title} has successfully been updated`)
+      setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
+      setMessage(`The blog titled ${updatedPost.title} has successfully been updated`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
 
-  } catch(exception) {
-    setMessage(`ERROR: The blog post could not be updated. Please try again later`)
+    } catch(exception) {
+      setMessage('ERROR: The blog post could not be updated. Please try again later')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
+    }
   }
-}
 
   const removeBlog = async (post) => {
     try {
@@ -163,9 +144,9 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-    } 
-    catch {
-      setMessage(`ERROR: You are not authorized to remove this blog`)
+    }
+    catch(exception) {
+      setMessage('ERROR: You are not authorized to remove this blog')
       setTimeout(() => {
         setMessage(null)
       }, 5000)
@@ -176,10 +157,22 @@ const App = () => {
 
   return (
     <div>
-        {user === null ?
-          loginForm() :
-          blogForm()
-         }
+      {user === null ?
+        loginForm() :
+        <div>
+          <h1>blogs</h1>
+          <Notification message={message} />
+          <p>{user.name} logged-in</p>
+          <Togglable buttonLabel='Create New Note' ref={noteFormRef}>
+
+            <BlogForm addPost={addPost}
+              handleTitleChange={({ target }) => setTitle(target.value)}
+              handleNameChange={({ target }) => setName(target.value)}
+              handleUrlChange={({ target }) => setUrl(target.value)} />
+
+          </Togglable>
+
+        </div>}
       <br></br>
       {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
         <BlogExpanded key={blog.id} post={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
