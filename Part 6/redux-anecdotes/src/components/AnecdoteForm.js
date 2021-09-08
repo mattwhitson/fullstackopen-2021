@@ -1,11 +1,10 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { addAnecdote } from '../reducers/anecdoteReducer'
 import {  setNotificationTitle } from '../reducers/notificationReducer'
 import { removeNotification } from '../reducers/notificationReducer'
 const AnecdoteForm = () => {
     const dispatch = useDispatch()
-
     const addNotification = (content) => {
         dispatch(setNotificationTitle(content))
     }
