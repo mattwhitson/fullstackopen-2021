@@ -14,11 +14,11 @@ const AnecdoteList = () => {
         }
         const filter = new RegExp( filters, 'i' )
         return anecdotes.filter(anecdote => anecdote.content.match(filter))  
-      })
+    })
 
     const vote = (anecdote) => {
         console.log('vote', anecdote.id)
-        dispatch(addLike(anecdote.id))
+        dispatch(addLike(anecdote))
         addNotification(anecdote.content)
         setTimeout(() => {
             console.log('5 secodns parssed')
