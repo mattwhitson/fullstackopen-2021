@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addLike } from '../reducers/anecdoteReducer'
 import {  setNotificationLike } from '../reducers/notificationReducer'
-import { removeNotification } from '../reducers/notificationReducer'
 
 const AnecdoteList = () => {
     
@@ -20,19 +19,12 @@ const AnecdoteList = () => {
         console.log('vote', anecdote.id)
         dispatch(addLike(anecdote))
         addNotification(anecdote.content)
-        setTimeout(() => {
-            console.log('5 secodns parssed')
-            hideNotification()
-        }, 5000)
       }
 
     const addNotification = (content) => {
-        dispatch(setNotificationLike(content))
+        dispatch(setNotificationLike(content, 5))
     }
 
-    const hideNotification = () => {
-        dispatch(removeNotification())
-    }
 
     return(
         <>
