@@ -1,3 +1,4 @@
+let timer = null
 
 const reducer = (state = "hello", action) => {
     switch(action.type) {
@@ -21,12 +22,16 @@ const removeNotification = () => {
 }
 
 export const setNotificationTitle = (notification, time) => {
+    if(timer !== null) {
+        clearTimeout()
+    }
+
     return async dispatch => {
         dispatch({
             type: 'POST',
             data: notification
         })
-        setTimeout(() => {
+        timer = setTimeout(() => {
             console.log('5 secodns parssed')
             dispatch(removeNotification())
         }, 1000 * time)
@@ -34,12 +39,16 @@ export const setNotificationTitle = (notification, time) => {
 }
 
 export const setNotificationLike = (notification, time) => {
+    if(timer !== null) {
+        clearTimeout()
+    }
+
     return async dispatch => {
         dispatch({
             type: 'LIKE',
             data: notification
         })
-        setTimeout(() => {
+        timer = setTimeout(() => {
             console.log('5 secodns parssed')
             dispatch(removeNotification())
         }, 1000 * time)
