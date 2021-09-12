@@ -49,7 +49,6 @@ postsRouter.delete('/:id', async (request, response) => {
   const token = request.token
   const decodedToken = jwt.verify(token, process.env.SECRET)
   const user = await User.findById(decodedToken.id)
-  console.log(`decoded token: ${decodedToken._id} user:${user}`)
   if(post.user._id.toString() === user._id.toString()){
     await Post.findByIdAndRemove(request.params.id)
     return response.status(204).end()

@@ -1,7 +1,6 @@
 const notificationReducer = (state = null, action) => {
     switch(action.type) {
         case 'POST': 
-            console.log('we are now alive')
             return action.data
         case 'HIDE':
             return null
@@ -21,7 +20,6 @@ const removeNotification = () => {
 
 export const setNotification = (message, value, time) => {
     return async dispatch => {
-        console.log('made it this far')
         dispatch({
             type: 'POST',
             data: {

@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { deleteBlog, updateBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 
-const BlogExpanded = (props) => {
-  const post = props.post
-
+const BlogExpanded = ({post}) => {
+  const dispatch = useDispatch()
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
-
 
 
   const toggleVisibility = () => {
@@ -26,12 +27,26 @@ const BlogExpanded = (props) => {
 
   const addLike = () => {
     const newObj = { ...post, likes : post.likes + 1 }
-    props.updateBlog(newObj)
+    try {
+      dispatch(updateBlog(newObj))
+      dispatch(setNotification(`The blog titled ${newObj.title} has successfully been updated`, '', 5))
+    } catch {
+      dispatch(setNotification('ERROR: The blog post could not be updated. Please try again later', 'error', 5))
+    }
   }
 
   const removePost = () => {
     if(window.confirm('Do you really want to delete this post?')) {
-      props.removeBlog(post)
+      try {
+        console.log(`post ${post}`)
+        dispatch(deleteBlog(post.id))
+        dispatch(setNotification(`The blog titled ${post.title} has successfully been removed`, '', 5))
+        
+      }
+      catch(exception) {
+        console.log(exception)
+        dispatch(setNotification('ERROR: You are not authorized to remove this blog', 'error', 5))
+      }
     }
   }
 

@@ -7,10 +7,10 @@ import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import BlogExpanded from './components/BlogExpanded'
 import { setNotification } from './reducers/notificationReducer'
+import { addBlog, initalizeBlogs } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
@@ -21,10 +21,10 @@ const App = () => {
   const noteFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    dispatch(initalizeBlogs())
   }, [])
+
+  const blogs = useSelector(state => state.blogs)
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
@@ -71,14 +71,13 @@ const App = () => {
       likes: 0
     }
     noteFormRef.current.toggleVisibility()
-    blogService
-      .create(newPost)
-      .then(response => {
-        setBlogs(blogs.concat(response))
-        setName('')
-        setTitle('')
-        setUrl('')
-      })
+
+    dispatch(addBlog(newPost))
+
+    setName('')
+    setTitle('')
+    setUrl('')
+  
 
     dispatch(setNotification(`${user.name} has posted a new blog titled ${newPost.title}`, '', 5))
     
@@ -111,37 +110,6 @@ const App = () => {
     </div>
   )
 
-  const updateBlog = async (newObj) => {
-    try {
-      const updatedPost = await blogService
-        .update(newObj)
-
-      setBlogs(blogs.map(blog => blog.id !== updatedPost.id ? blog : updatedPost))
-      dispatch(setNotification(`The blog titled ${updatedPost.title} has successfully been updated`, '', 5))
-      
-
-    } catch(exception) {
-      dispatch(setNotification('ERROR: The blog post could not be updated. Please try again later', 'error', 5))
-      
-    }
-  }
-
-  const removeBlog = async (post) => {
-    try {
-      await blogService
-        .remove(post.id)
-
-      setBlogs(blogs.filter(blog => blog.id !== post.id))
-      dispatch(setNotification(`The blog titled ${post.title} has successfully been removed`, '', 5))
-      
-    }
-    catch(exception) {
-      dispatch(setNotification('ERROR: You are not authorized to remove this blog', 'error', 5))
-    }
-  }
-
-
-
   return (
     <div>
       {user === null ?
@@ -162,7 +130,7 @@ const App = () => {
         </div>}
       <br></br>
       {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <BlogExpanded key={blog.id} post={blog} updateBlog={updateBlog} removeBlog={removeBlog}/>
+        <BlogExpanded key={blog.id} post={blog}/>
       )}
     </div>
   )
