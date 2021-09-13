@@ -23,7 +23,6 @@ const App = () => {
 
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
-  console.log(`USER IN APP ${user}`)
   useEffect(() => {
     dispatch(checkLocalStorage())
   }, [])

@@ -17,10 +17,7 @@ const LoginForm = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    console.log('i am here')
     dispatch(logIn(username, password))
-
-    // dispatch(setNotification('You have successfully logged in', '',  5))
   }
 
   return (

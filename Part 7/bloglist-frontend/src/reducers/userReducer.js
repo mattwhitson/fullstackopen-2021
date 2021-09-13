@@ -18,21 +18,21 @@ const userReducer = (state = null, action) => {
 export const logIn = (username, password) => {
     return async dispatch => {  
         try{
-        const userCredentials = await loginService.login({
-            username, password
-        })
-        window.localStorage.setItem(
-            'loggedNoteappUser', JSON.stringify(userCredentials)
-        )
-        blogService.setToken(userCredentials.token)
-        console.log(`uesrcreds ${userCredentials}`)
-        dispatch({
-            type: 'LOG',
-            data: userCredentials
-        })
-        dispatch(setNotification('You have successfully logged in', '',  5))
+            const userCredentials = await loginService.login({
+                username, password
+            })
+            window.localStorage.setItem(
+                'loggedNoteappUser', JSON.stringify(userCredentials)
+            )
+            blogService.setToken(userCredentials.token)
+            
+            dispatch({
+                type: 'LOG',
+                data: userCredentials
+            })
+            
+            dispatch(setNotification('You have successfully logged in', '',  5))
         } catch (error) {
-            console.log(`we here`)
             dispatch(setNotification('ERROR: Authorization failed', 'error',  5))
         }
         
