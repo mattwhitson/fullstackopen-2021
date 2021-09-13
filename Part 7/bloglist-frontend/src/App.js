@@ -1,22 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import BlogExpanded from './components/BlogExpanded'
+import LoginForm from './components/LoginForm'
 import { setNotification } from './reducers/notificationReducer'
 import { addBlog, initalizeBlogs } from './reducers/blogReducer'
+import { checkLocalStorage } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
   const [url, setUrl] = useState('')
   const [name, setName] = useState('')
   const [title, setTitle] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
 
   const noteFormRef = useRef()
 
@@ -25,41 +22,11 @@ const App = () => {
   }, [])
 
   const blogs = useSelector(state => state.blogs)
-
+  const user = useSelector(state => state.user)
+  console.log(`USER IN APP ${user}`)
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
+    dispatch(checkLocalStorage())
   }, [])
-
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const userCredentials = await loginService.login({
-        username, password
-      })
-
-      window.localStorage.setItem(
-        'loggedNoteappUser', JSON.stringify(userCredentials)
-      )
-      blogService.setToken(userCredentials.token)
-
-      setUser(userCredentials)
-      setUsername('')
-      setPassword('')
-
-      dispatch(setNotification('You have successfully logged in', '',  5))
-
-    } catch (exception) {
-      console.log(exception)
-      console.log(user)
-
-      dispatch(setNotification('ERROR: Wrong credentials', 'error', 5))
-    }
-  }
 
   const addPost = (event) => {
     event.preventDefault()
@@ -84,36 +51,10 @@ const App = () => {
   }
 
 
-  const loginForm = () => (
-    <div>
-      <h1>Please Login</h1>
-      <Notification />
-      <form onSubmit={handleLogin}>
-        <div>
-            username
-          <input
-            type="text"
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-            password
-          <input
-            type="password"
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
-
   return (
     <div>
       {user === null ?
-        loginForm() :
+        <LoginForm /> :
         <div>
           <h1>blogs</h1>
           <Notification />

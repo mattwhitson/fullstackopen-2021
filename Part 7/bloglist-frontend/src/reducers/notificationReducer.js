@@ -20,6 +20,7 @@ const removeNotification = () => {
 
 export const setNotification = (message, value, time) => {
     return async dispatch => {
+        console.log(message)
         dispatch({
             type: 'POST',
             data: {
