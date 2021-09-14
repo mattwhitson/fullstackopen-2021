@@ -54,8 +54,7 @@ const BlogExpanded = ({post}) => {
   return(
     <div style={blogStyle} className="post">
       <div style={hideWhenVisible} className="infoHidden">
-        <Link to={`/api/blogs/${post.id}`}>{`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}&nbsp;&nbsp;&nbsp;</Link>
-        <button onClick={toggleVisibility}>View</button>
+        <Link to={`/api/blogs/${post.id}`}>{`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}</Link>
       </div>
       <div style={showWhenVisible} className="infoVisible">
         <p className="postTitle">{post.title}

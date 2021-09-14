@@ -65,12 +65,12 @@ postsRouter.put('/:id', async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes
+    likes: body.likes,
+    comments: body.comments
   }
-
+  console.log(updatedPost)
   Post.findByIdAndUpdate(request.params.id, updatedPost, { new: true })
     .then(updatePost => {
-
       response.json(updatePost)
     })
 })

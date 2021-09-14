@@ -13,6 +13,7 @@ import UsersList from './components/UsersList'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserExpanded from './components/UserExpanded'
 import PostExpanded from './components/PostExpanded'
+import Navigation from './components/Navigation'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -78,27 +79,28 @@ const App = () => {
 
 
   return (
-    <div>
+    <div className="container">
       <Switch>
           <Route path='/api/blogs/:id'>
             {user === null ?
             <LoginForm /> :
+            <>
               <div>
-                <h1>blogs</h1>
+                <Navigation user={user} />
+                <h1>Blogs App</h1>
                 <Notification />
-                <p>{user.name} logged-in</p> 
-              </div>}
+              </div>
             <PostExpanded post={postLook} />
+            </>
+            }
           </Route>
           <Route path='/api/blogs'>
           {user === null ?
             <LoginForm /> :
             <div>
-              <h1>blogs</h1>
+              <Navigation user={user} />
+              <h1>Blogs App</h1>
               <Notification />
-              <p>{user.name} logged-in</p>
-              
-                {allUsers !== null && <UsersList allUsers={allUsers} />}
               
               <Togglable buttonLabel='Create New Note' ref={noteFormRef}>
 
@@ -114,16 +116,26 @@ const App = () => {
           {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
             <BlogExpanded key={blog.id} post={blog}/>
           )}
+          
           </Route>
           <Route path='/api/users/:id'>
             {user === null ?
               <LoginForm /> :
               <div>
-                <h1>blogs</h1>
+                <Navigation user={user} />
+                <h1>Blogs App</h1>
                 <Notification />
-                <p>{user.name} logged-in</p> 
               </div>}
               <UserExpanded user={userLook} />
+          </Route>
+          <Route path='/api/users'>
+              {user === null ?
+                <LoginForm /> :
+                <div>
+                  <Navigation user={user} />
+                  <h1>Blogs App</h1>
+                  {allUsers !== null && <UsersList allUsers={allUsers} />}
+                </div>}
           </Route>
       </Switch>
     </div>
