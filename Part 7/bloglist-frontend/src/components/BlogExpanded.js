@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteBlog, updateBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Link } from 'react-router-dom'
 
 
 const BlogExpanded = ({post}) => {
@@ -53,7 +54,7 @@ const BlogExpanded = ({post}) => {
   return(
     <div style={blogStyle} className="post">
       <div style={hideWhenVisible} className="infoHidden">
-        {`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}&nbsp;&nbsp;&nbsp;
+        <Link to={`/api/blogs/${post.id}`}>{`${post.title}`}&nbsp;&nbsp;&nbsp;{`By: ${post.author}`}&nbsp;&nbsp;&nbsp;</Link>
         <button onClick={toggleVisibility}>View</button>
       </div>
       <div style={showWhenVisible} className="infoVisible">

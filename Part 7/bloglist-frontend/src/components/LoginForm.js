@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
 import { logIn } from '../reducers/userReducer'
-import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch } from 'react-redux'
 import Notification from './Notification'
 
@@ -49,12 +47,6 @@ const LoginForm = () => {
 }
 
 
-// LoginForm.propTypes = {
-//   handleLogin: PropTypes.func.isRequired,
-//   setUsername: PropTypes.func.isRequired,
-//   setPassword: PropTypes.func.isRequired,
-//   username: PropTypes.string.isRequired,
-//   password: PropTypes.string.isRequired
-// }
+
 
 export default LoginForm
