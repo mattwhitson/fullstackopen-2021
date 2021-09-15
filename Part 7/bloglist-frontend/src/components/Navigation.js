@@ -1,13 +1,20 @@
 import { Navbar, Nav } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
-const Navigation = ({ user }) => {
 
+const Navigation = ({ user }) => {
     const padding = {
         padding: 5
       }
+
+    const logOut = () => {
+        
+        localStorage.clear()
+        
+    }
     
     return (
+        <div>
         <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
@@ -25,15 +32,16 @@ const Navigation = ({ user }) => {
                     : <Link style={padding} to="/login">login</Link>
                     }
                 </Nav.Link> */}
-                <Navbar.Text>
-                    Signed in as: {user.name}
-                </Navbar.Text>
                 </Nav>
             </Navbar.Collapse>
             <Navbar.Text>
-                    Signed in as: {user.name}
+                    Signed in as: {user.name}&nbsp;&nbsp;
+                    <Link to="/api/blogs">
+                        <button onClick={logOut}>Log out</button>
+                    </Link>
             </Navbar.Text>
         </Navbar>
+        </div>
     )
 }
 

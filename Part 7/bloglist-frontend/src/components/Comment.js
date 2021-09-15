@@ -7,6 +7,7 @@ const Comment = ({ post }) => {
     const dispatch = useDispatch()
 
     const addComment = (event) => {
+        event.preventDefault()
         const newObj = {
             ...post, comments: post.comments.concat(comment)
         }

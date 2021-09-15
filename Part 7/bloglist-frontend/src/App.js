@@ -14,6 +14,7 @@ import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserExpanded from './components/UserExpanded'
 import PostExpanded from './components/PostExpanded'
 import Navigation from './components/Navigation'
+import { Table } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -113,10 +114,15 @@ const App = () => {
 
             </div>}
           <br></br>
-          {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <BlogExpanded key={blog.id} post={blog}/>
-          )}
-          
+          <Table striped="true">
+            <tbody>
+              {user !== null && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+              <tr key={blog.id}>
+                <BlogExpanded key={blog.id} post={blog}/>
+              </tr>
+              )}
+          </tbody>
+          </Table>
           </Route>
           <Route path='/api/users/:id'>
             {user === null ?
