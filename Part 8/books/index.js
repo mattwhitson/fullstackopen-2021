@@ -141,7 +141,7 @@ const resolvers = {
           }
           return books
         },
-      allAuthors: () => authors
+      allAuthors: () =>  authors
   },
   Author: {
     bookCount: (root) => books.reduce((totalBooks, book) => {
@@ -153,9 +153,11 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
+      console.log(args)
         const newBook = {
             ...args
         }
+        console.log(newBook)
       if (authors.find(author => author.name === args.author)) {
         books = books.concat(newBook)
         return newBook
