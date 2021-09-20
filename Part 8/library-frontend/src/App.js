@@ -4,11 +4,10 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import Notify from './components/Notify'
-import LoginForm from './components/LoginForm'
+import Login from './components/Login'  
 
 
 const App = () => {
-  const [token, setToken] = useState(null)
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
 
@@ -19,20 +18,6 @@ const App = () => {
     }, 10000)
   }
 
-  if (!token) {
-    
-      return (
-        <div>
-          <Notify errorMessage={errorMessage} />
-          <h2>Login</h2>
-          <LoginForm
-            setToken={setToken}
-            setError={notify}
-          />
-        </div>
-      )
-    
-  }
 
   return (
     <div>
@@ -40,6 +25,7 @@ const App = () => {
         <button onClick={() => setPage('authors')}>authors</button>
         <button onClick={() => setPage('books')}>books</button>
         <button onClick={() => setPage('add')}>add book</button>
+        <button onClick={() => setPage('login')}>login</button>
       </div>
       <Notify errorMessage={errorMessage} />
       <Authors
@@ -54,6 +40,12 @@ const App = () => {
       <NewBook
         show={page === 'add'}
         setError={notify}
+      />
+      
+      <Login
+      show={page === 'login'}
+      notify={notify}
+      errorMessage={errorMessage}
       />
 
     </div>

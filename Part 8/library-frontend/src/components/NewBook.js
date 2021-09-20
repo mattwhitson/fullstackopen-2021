@@ -13,6 +13,7 @@ const NewBook = (props) => {
     refetchQueries: [  {query: ALL_AUTHORS } ],
     onError: (error) => {
       props.setError(error.graphQLErrors[0])
+      console.log(error.graphQLErrors)
     }
   })
 
