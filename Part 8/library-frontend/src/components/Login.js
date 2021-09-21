@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import LoginForm from './LoginForm'
 import Notify from './Notify'
 
-const Login = ({ notify, errorMessage, show}) => {
-    const [token, setToken] = useState(null)
+const Login = ({ notify, errorMessage, show, setToken }) => {
     
     if(!show) {
         return null
