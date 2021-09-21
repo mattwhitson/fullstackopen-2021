@@ -1,12 +1,14 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server')
+require('dotenv').config()
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const Author = require('./models/author')
 const Book = require('./models/book')
 const User = require('./models/user')
 
-const MONGODB_URI = 'mongodb+srv://hackysack:Churchill1@cluster0.iklei.mongodb.net/library?retryWrites=true&w=majority'
-const JWT_SECRET = 'supersecretstring' //LOL
+
+const MONGODB_URI = process.env.MONGODB_URI
+const JWT_SECRET = process.env.SECRET //LOL
 
 console.log('connecting to', MONGODB_URI)
 
