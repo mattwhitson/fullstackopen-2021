@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS, ME} from '../queries'
+import { useLazyQuery, useQuery } from '@apollo/client'
+import { GENRE_FILTER, ME } from '../queries'
 
 const Recommendations = ({ show }) => {
     const user = useQuery(ME)
-    const books = useQuery(ALL_BOOKS)
+    const [genreFilter, result] = useLazyQuery(GENRE_FILTER)
     const [filteredBooks, setFilteredBooks] = useState([])
 
     useEffect(() => {
-        if(user.data && books.data) {
-        const bookList = books.data.allBooks
-        const result = bookList.filter(book => book.genres.indexOf(user.data.me.favoriteGenre) !== -1)
-        setFilteredBooks(result)
-        console.log(`RESULT`)
-        console.log(result)
-        console.log(`FAV GEN`)
-        console.log(user)
+        if(user.data && result.data) {
+            setFilteredBooks(result.data.allBooks)
         }
-    },[user, books])
+    },[user, result])
+
+    useEffect(() => {
+        if(user.data) {
+            genreFilter({ variables: {genre: user.data.me.favoriteGenre } })
+        }
+    }, [user, genreFilter])
 
     console.log(user)
 
@@ -25,7 +25,7 @@ const Recommendations = ({ show }) => {
         return null
     }
 
-    if(user.loading || books.loading) {
+    if(user.loading || result.loading) {
         return(
             <div>Loading...</div>
         )

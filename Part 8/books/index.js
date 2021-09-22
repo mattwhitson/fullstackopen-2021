@@ -35,11 +35,11 @@ const typeDefs = gql`
       id: ID!
     }
 
-
     input AuthorInit {
       name: String!
       born: Int
     }
+
 
     type User {
       username: String!
@@ -95,26 +95,17 @@ const resolvers = {
         return authors.length
       },
       allBooks: async (root, args) => {
+          if(args.genre) {
+            console.log("hello my friend you are here now")
+            const result = await Book.find({}).populate('author')
+            return result.filter(book => book.genres.indexOf(args.genre) !== -1)
+          }
 
           const books = await Book.find({}).populate('author')
-          console.log(books)
-          return books
-        
-          if(args.author && args.genre) {
-            const book = books.filter(book => book.author === args.author.name && book.genres.includes(args.genre))
-            return book
-          }
-          else if(args.author) {
-            return books.filter(book => book.author === args.author.name)
-          }
-          else if(args.genre) {
-            return books.filter(book => book.genres.includes(args.genre))
-          }
           return books
         },
       allAuthors: async () => await Author.find({}),
-      me: async (root, args, context) => context.currentUser
-      
+      me: async (root, args, context) => context.currentUser, 
   },
   Author: {
     bookCount: async (root) => {
