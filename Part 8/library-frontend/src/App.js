@@ -6,7 +6,8 @@ import NewBook from './components/NewBook'
 import Notify from './components/Notify'
 import Login from './components/Login'  
 import Recommendations from './components/Recommendations'
-import { useApolloClient } from '@apollo/client'
+import { ALL_BOOKS, BOOK_ADDED } from './queries'
+import { useSubscription, useApolloClient } from '@apollo/client'
 
 
 const App = () => {
@@ -14,6 +15,26 @@ const App = () => {
   const [page, setPage] = useState('authors')
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
+
+  const updateCacheWith = (addedBook) => {
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    
+    client.writeQuery({
+      query: ALL_BOOKS,
+      data: { allBooks : dataInStore.allBooks.concat(addedBook) }
+    })
+    
+  }
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      console.log('addedBook coming up')
+      console.log(addedBook)
+      window.confirm('A new book has been added to the database')
+      updateCacheWith(addedBook)
+    }
+  })
 
   const notify = (message) => {
     setErrorMessage(message)
@@ -57,6 +78,7 @@ const App = () => {
       <NewBook
         show={page === 'add'}
         setError={notify}
+        // updateCacheWith={updateCacheWith}
       />
       
       <Login

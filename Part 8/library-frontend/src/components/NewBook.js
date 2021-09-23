@@ -14,6 +14,9 @@ const NewBook = (props) => {
     onError: (error) => {
       props.setError(error.graphQLErrors[0])
       console.log(error.graphQLErrors)
+    },
+    update: (store, response) => {
+      props.updateCacheWith(response.data.addBook)
     }
   })
 
