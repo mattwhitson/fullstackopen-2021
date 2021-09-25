@@ -32,7 +32,7 @@ const addPatient = (patient: NewPatient): PatientSecure => {
         ...patient,
         ssn: String(patient.ssn)
     };
-    patientData.push(newPatient);
+    patientData.concat(newPatient);
     
     return newPatient;
 };
