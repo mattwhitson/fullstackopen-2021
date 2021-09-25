@@ -1,7 +1,12 @@
 import { ContentProps } from "../types"
+import Part from './Part'
 
 const Content = (props: ContentProps): JSX.Element => {
-    return <p>{props.name} {props.exerciseCount}</p>
-}
+    return  <div>{props.courseParts.map(course => 
+                    <Part course={course} /> 
+                )}
+            </div>
+} 
+
 
 export default Content
