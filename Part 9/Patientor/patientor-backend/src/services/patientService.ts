@@ -4,15 +4,15 @@ import patientData from '../../data/patients.json';
 import {v1 as uuid} from 'uuid';
 
 
-
+const patients: Array<Patient> = patientData
 
 const getAll = (): Array<Patient> => {
-    return patientData;
+    return patients;
 };
 
 
 const getAllNoSSN = (): PatientSecure [] => {
-    return patientData.map(patient => ({
+    return patients.map(patient => ({
             id: patient.id,
             name: patient.name,
             dateOfBirth: patient.dateOfBirth,
@@ -23,7 +23,7 @@ const getAllNoSSN = (): PatientSecure [] => {
 };
 
 const findByID = (id: string): PatientSecure | undefined => {
-    return patientData.find(patient => patient.id === id);
+    return patients.find(patient => patient.id === id);
 };
 
 const addPatient = (patient: NewPatient): PatientSecure => {
@@ -32,7 +32,7 @@ const addPatient = (patient: NewPatient): PatientSecure => {
         ...patient,
         ssn: String(patient.ssn)
     };
-    patientData.concat(newPatient);
+    patients.push(newPatient);
     
     return newPatient;
 };

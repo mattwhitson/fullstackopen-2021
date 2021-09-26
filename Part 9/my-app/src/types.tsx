@@ -22,18 +22,21 @@ interface CoursePartBase {
   type: string;
 }
 
-interface CourseNormalPart extends CoursePartBase {
-  type: "normal";
+interface CourseDescription extends CoursePartBase {
   description: string;
+}
+
+interface CourseNormalPart extends CourseDescription {
+  type: "normal";
+  
 }
 interface CourseProjectPart extends CoursePartBase {
   type: "groupProject";
   groupProjectCount: number;
 }
 
-interface CourseSubmissionPart extends CoursePartBase {
+interface CourseSubmissionPart extends CourseDescription {
   type: "submission";
-  description: string;
   exerciseSubmissionLink: string;
 }
 

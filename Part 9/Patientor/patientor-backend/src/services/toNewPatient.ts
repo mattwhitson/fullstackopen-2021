@@ -1,6 +1,6 @@
-import { Gender, NewPatient } from "../types";
+import { Entry, Gender, NewPatient } from "../types";
 
-type Fields = {name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown};
+type Fields = {name: unknown, dateOfBirth: unknown, ssn: unknown, gender: unknown, occupation: unknown, entries: unknown};
 
 const isString = (text: unknown): text is string => {
     return typeof text === 'string' || text instanceof String;
@@ -24,13 +24,20 @@ const parseGender = (obj: unknown): Gender => {
     return obj;
 };
 
-const toNewPatient =({ name, dateOfBirth, ssn, gender, occupation }: Fields): NewPatient => {
+const parseEntries = (obj: unknown): Array<Entry> => {
+    if(!obj || !Array.isArray(obj))
+        throw new Error('entries is not an array');
+    return obj
+}
+
+const toNewPatient =({ name, dateOfBirth, ssn, gender, occupation, entries }: Fields): NewPatient => {
     const newPatient =({
         name: parseString(name),
         dateOfBirth: parseString(dateOfBirth),
         ssn: parseString(ssn),
         gender: parseGender(gender),
-        occupation: parseString(occupation)
+        occupation: parseString(occupation),
+        entries: parseEntries(entries)
     });
 
     return newPatient;
