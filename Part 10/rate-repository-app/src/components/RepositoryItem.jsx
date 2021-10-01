@@ -22,6 +22,8 @@ const RepositoryItem = ({item}) => {
         language: {
             marginLeft: 50,
             marginRight: 260,
+            width: 'auto',
+            height: 'auto',
             textAlign: 'center',
             paddingBottom: 10,
             backgroundColor: 'blue',
