@@ -1,11 +1,20 @@
 import { Formik } from 'formik';
-import React, {useState} from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
+import React from 'react';
 import TextInputForm from './TextInputForm'
-
+import * as yup from 'yup'
 
 const SignIn = () => {
-  const [input, setInput] = useState('')
+
+  const validationSchema = yup.object().shape({
+    username: yup
+      .string()
+      .min(3)
+      .required('username is required'),
+    password: yup
+      .string()
+      .min(3)
+      .required('password is required'),
+  });
 
     const onSubmit = (values) => {
         console.log(values);
@@ -21,6 +30,7 @@ const SignIn = () => {
     <Formik
      initialValues={initialValues}
      onSubmit={values => console.log(values)}
+     validationSchema={validationSchema}
    >
      {(props) => (
        <TextInputForm handleSubmit={props.handleSubmit} />

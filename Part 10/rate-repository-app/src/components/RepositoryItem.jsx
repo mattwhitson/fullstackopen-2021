@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
+import Text from '../utils/Text';
 
 const RepositoryItem = ({item}) => {
 
@@ -21,7 +22,7 @@ const RepositoryItem = ({item}) => {
         }, 
         language: {
             marginLeft: 50,
-            marginRight: 260,
+            marginRight: 250,
             width: 'auto',
             height: 'auto',
             textAlign: 'center',
@@ -65,7 +66,7 @@ const RepositoryItem = ({item}) => {
                 <Text>Description: {item.description}</Text>
             </View>
         </View>
-        <Text style={styles.language}>{item.language}</Text>
+        <Text fontWeight="bold"style={styles.language}>{item.language}</Text>
         <View style={styles.flexContainerInfo}>
             <View style={styles.flexContainer}>
                 <Text style={styles.flexElementsCenter}>{item.stargazersCount}k</Text>

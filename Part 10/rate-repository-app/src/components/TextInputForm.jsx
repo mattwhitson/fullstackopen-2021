@@ -1,25 +1,13 @@
 import React from 'react';
-import { Text, TextInput, View, Button } from 'react-native';
-import { Formik, useField } from 'formik';
+import { View, Button } from 'react-native';
+import FormikTextInputForm from './FormikTextInputForm';
 
 const TextInputForm = ({handleSubmit}) => {
-    const [userField, userMeta, userHelpers] = useField('username');
-    const [passwordField, passwordMeta, passwordHelpers] = useField('password')
-
 
     return(
         <View>
-            <TextInput
-            placeholder={'username'}
-            value={userField.value}
-            onChangeText={(text) => userHelpers.setValue(text)}
-            />
-            <TextInput 
-            placeholder={'password'}
-            value={passwordField.value}
-            onChangeText={(text) => passwordHelpers.setValue(text)}
-            secureTextEntry={true}
-            />
+            <FormikTextInputForm name="username" placeholder="username" secureTextEntry={false}/>
+            <FormikTextInputForm name="password" placeholder="password" secureTextEntry={true}/>
             <Button onPress={handleSubmit} title="Submit" />
         </View>
     )

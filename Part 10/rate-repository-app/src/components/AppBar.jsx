@@ -1,5 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import Text from '../utils/Text';
 import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 
@@ -28,10 +29,10 @@ const AppBar = () => {
       <ScrollView horizontal={true} >
         <View style={styles.headerStyle}>
       <Link to='/'>
-        <Text style={styles.linkStyle}>Repositories</Text>
+        <Text fontWeight="bold" color="primary" style={styles.linkStyle}>Repositories</Text>
       </Link>
       <Link to="/signin">
-        <Text style={styles.linkStyle}>Sign In</Text>
+        <Text fontWeight="bold" color="primary" style={styles.linkStyle}>Sign In</Text>
       </Link>
       </View>
       </ScrollView>
