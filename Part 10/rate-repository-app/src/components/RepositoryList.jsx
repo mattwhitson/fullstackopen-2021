@@ -16,7 +16,6 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const RepositoryList = () => {
   const repositoriesQuery = useQuery(INIT_REPOSITORIES)
-  console.log(repositoriesQuery.data)
   
   if(repositoriesQuery.loading) {
     return<Text>Loading...</Text>

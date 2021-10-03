@@ -2,6 +2,8 @@ import { Formik } from 'formik';
 import React from 'react';
 import TextInputForm from './TextInputForm'
 import * as yup from 'yup'
+import { useMutation } from "@apollo/client";
+import { SIGN_IN } from "../graphql/queries";
 
 const SignIn = () => {
 
@@ -16,9 +18,17 @@ const SignIn = () => {
       .required('password is required'),
   });
 
-    const onSubmit = (values) => {
-        console.log(values);
-    };
+  const onSubmit = async (values) => {
+    const [mutate, result] = useMutation(SIGN_IN);
+    
+    
+    try {
+      await mutate({variables: {values}});
+      console.log(result)
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
     const initialValues = {
         username: '',
@@ -29,7 +39,7 @@ const SignIn = () => {
   return (
     <Formik
      initialValues={initialValues}
-     onSubmit={values => console.log(values)}
+     onSubmit={onSubmit}
      validationSchema={validationSchema}
    >
      {(props) => (

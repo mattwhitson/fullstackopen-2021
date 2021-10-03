@@ -19,3 +19,11 @@ query {
     }
   }
 `
+
+export const SIGN_IN = gql`
+  mutation authUser($username: String!, $password: String!) {
+    authorize(credentials: { username: $username, password: $password }) {
+      accessToken
+    }
+  }
+`;
